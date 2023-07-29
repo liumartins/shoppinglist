@@ -1,0 +1,19 @@
+{
+    "name": "lsmartinsme/minimvc",
+    "description": "Mini MVC project in PHP",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Lindomar de Sá Martins"
+        }
+    ],
+    "require": {
+        "php": "~8.1"
+    }
+}

@@ -1,0 +1,19 @@
+<h1>Shopping List</h1>
+
+    <table>
+        <thead>
+            <th>
+                <td>Id</td>
+                <td>Name</td>
+            </th>
+        </thead>
+  
+        <tbody>
+        <?php foreach($data as $dt): ?>
+            <tr>
+                <td><?=$dt['shopping_list_id']?></td>
+                <td><em><?=$dt['name']?></em></td>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
