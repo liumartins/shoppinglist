@@ -17,6 +17,10 @@ class ShoppingList extends Model {
         $this->pdo = new Model();
     }
 
+    public function store($data) {
+        return $this->pdo->insert($data);
+    }
+
 	public function getAll()
     {
         $query = 'SELECT * FROM ' . $this->table .  ' ORDER BY ' . $this->primaryKey . ' ASC';
@@ -30,6 +34,6 @@ class ShoppingList extends Model {
         $query = 'SELECT * FROM ' . $this->table .  ' where '. $this->primaryKey=$id .' LIMIT 1';
         $result = $this->pdo->fetch($query);
 
-		var_dump($result);
+		return $result;
     }
 }

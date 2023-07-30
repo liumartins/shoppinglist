@@ -41,6 +41,23 @@ class Model {
         }
     }
 
+
+    public function insert($data) {
+
+        $test = $this->arraySearchPartial($data, 'btn-');
+        unset($data[$test]);
+        $keys = array_keys($data);
+        $keys = implode(', ', $keys);
+        $values = $this->addingSimbol(array_keys($data));
+        $values = implode(', ', $values);
+
+        $query = "INSERT INTO shopping_list ($keys) values ($values)";
+        $stmt = $this->getConnection()->prepare($query);
+    
+        $stmt->execute($data);
+
+    }
+
     public function fetchAll($sql, $params = null)
     {
         try {
@@ -59,5 +76,24 @@ class Model {
             }
             return null;
         }
+    }
+
+
+    private function arraySearchPartial($arr, $keyword) 
+    {
+        foreach($arr as $index => $string) {
+            if (strpos($index, $keyword) !== FALSE)
+                return $index;
+        }
+    }
+
+    private function addingSimbol($array)
+    {
+        $data = [];
+        foreach($array as $value) {
+            $data[] = ':'.$value;
+        }
+
+        return $data;
     }
 }

@@ -9,6 +9,10 @@ class ShoppingController extends Controller
 {
     protected $config;
 
+    public function newAction()
+    {  
+       return $this->view('shopping/form', ['action' => 'store']);
+    }
 
     public function listAction()
     {
@@ -20,7 +24,9 @@ class ShoppingController extends Controller
 
     public function storeAction()
     {
-        return 'store';
+       $model = $this->model(ShoppingList::class);
+       $model->store($_POST);
+       header('/shopping/list');
     }
 
     public function updateAction()
