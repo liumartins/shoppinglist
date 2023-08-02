@@ -21,6 +21,10 @@ class ShoppingList extends Model {
         return $this->pdo->insert($data);
     }
 
+        public function change($data) {
+        return $this->pdo->update($data);
+    }
+
     public function getItem($data) {
         return $this->pdo->select($data);
     }

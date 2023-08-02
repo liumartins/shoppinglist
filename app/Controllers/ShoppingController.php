@@ -15,7 +15,7 @@ class ShoppingController extends Controller
       if($params['id'] !== ''){
           $model = $this->model(ShoppingList::class);
           $data = [
-            'config' => ['action' => 'udate'],
+            'config' => ['action' => 'update'],
             'values' => $model->getItem($params['id'])
           ];
        } else {
@@ -45,7 +45,9 @@ class ShoppingController extends Controller
 
     public function updateAction()
     {
-        return 'update';
+       $model = $this->model(ShoppingList::class);
+       $model->change($_POST);
+       return header('/shopping/list');
     }
 
     public function deleteAction()

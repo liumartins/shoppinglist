@@ -46,11 +46,12 @@ class Model {
 
     public function insert($data) {
 
+        array_shift($data);
         $formButton = $this->arraySearchPartial($data, 'btn-');
         unset($data[$formButton]);
         $keys = array_keys($data);
         $keys = implode(', ', $keys);
-        $values = $this->addingSimbol(array_keys($data));
+        $values = $this->prepareInsert(array_keys($data));
         $values = implode(', ', $values);
 
         $query = "INSERT INTO shopping_list ($keys) values ($values)";
@@ -62,12 +63,33 @@ class Model {
 
     public function update($data)
     {
-        $formButton = $this->arraySearchPartial($data, 'btn-');
-        unset($data[$formButton]);
-        $keys = array_keys($data);
-        $keys = implode(', ', $keys);
+        try {
 
-        $query = "";
+            $id = array_key_first($data);
+            $where = $id.'=:'.$id;
+            $formButton = $this->arraySearchPartial($data, 'btn-');
+            unset($data[$formButton]);
+            $params = $data;
+            array_shift($params);
+            $keys = array_keys($params);
+            $values = $this->prepareUpdate($keys);
+            $values = implode(', ', $values);
+
+
+            $query = "UPDATE shopping_list SET $values WHERE $where";
+            $stmt = $this->getConnection()->prepare($query);
+            $stmt->execute($data);
+
+        } catch (\PDOException $ex) {
+            if ($this->debug) {
+                echo "<b>Error on ExecuteQuery():</b> " . $ex->getMessage() . "<br />";
+                echo "<br /><b>SQL: </b>" . $query . "<br />";
+
+                echo "<br /><b>Parameters: </b>";
+                print_r($data) . "<br />";
+            }
+            return null;
+        }
     }
 
     public function select($data)
@@ -123,11 +145,21 @@ class Model {
         }
     }
 
-    private function addingSimbol($array)
+    private function prepareInsert($array)
     {
         $data = [];
         foreach($array as $value) {
             $data[] = ':'.$value;
+        }
+
+        return $data;
+    }
+
+    private function prepareUpdate($array)
+    {
+        $data = [];
+        foreach($array as $value) {
+            $data[] = $value.'=:'.$value;
         }
 
         return $data;

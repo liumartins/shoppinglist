@@ -2,17 +2,19 @@
 <form method="post" action="/shopping/<?=$data['config']['action']?>">
     <fieldset>
         <legend>Shopping Items</legend>
-
+            <input type='hidden' name="shopping_list_id" value="<?=$data['values']['shopping_list_id'] ?? '' ?>">
         <div>
+
+
             <label for="list-name">List Name</label>
-            <input type="text" name="name" id="list-name" value="<?=$data['values']['name']?>" />
+            <input type="text" name="name" id="list-name" value="<?=$data['values']['name'] ?? ''?>" />
         </div>
             <br>
         <div>
             
             <label for="items">Items:</label>
             <select name="code" id="shopping-item">
-                <option value="<?=$data['values']['code']?>"><?=$data['values']['code']?></option>
+                <option value="<?=$data['values']['code'] ?? '0' ?>"><?=$data['values']['code'] ?? 'Select...' ?></option>
                 <option value="1">Item 1</option>
                 <option value="2">Item 2</option>
                 <option value="3">Item 3</option>
@@ -21,7 +23,7 @@
             </select>
         </div>
         <br>
-            <textarea name="description" id="description" cols="30" rows="10"><?=$data['values']['description']?></textarea>
+            <textarea name="description" id="description" cols="30" rows="10"><?=$data['values']['description'] ?? '' ?></textarea>
         <input type="submit" name="btn-update" value="Save" />
     </fieldset>
 </form>
