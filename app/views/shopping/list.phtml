@@ -13,6 +13,8 @@
             <tr>
                 <td><?=$dt['shopping_list_id']?></td>
                 <td><em><?=$dt['name']?></em></td>
+                <td><em><?=$dt['code']?></em></td>
+                <td> <a href='/shopping/new/<?=$dt['shopping_list_id']?>'>Edit</a> | Delete</td>
             </tr>
         <?php endforeach; ?>
         </tbody>

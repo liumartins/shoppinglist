@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use PDO;
+use PDOException;
 
 class Model {
 
@@ -33,6 +34,7 @@ class Model {
             }
 
             return self::$connection;
+
         } catch (\PDOException $ex) {
             if ($this->debug)
                 echo "<b>Error on getConnection(): </b>" . $ex->getMessage() . "<br/>";
@@ -44,8 +46,8 @@ class Model {
 
     public function insert($data) {
 
-        $test = $this->arraySearchPartial($data, 'btn-');
-        unset($data[$test]);
+        $formButton = $this->arraySearchPartial($data, 'btn-');
+        unset($data[$formButton]);
         $keys = array_keys($data);
         $keys = implode(', ', $keys);
         $values = $this->addingSimbol(array_keys($data));
@@ -58,14 +60,48 @@ class Model {
 
     }
 
-    public function fetchAll($sql, $params = null)
+    public function update($data)
+    {
+        $formButton = $this->arraySearchPartial($data, 'btn-');
+        unset($data[$formButton]);
+        $keys = array_keys($data);
+        $keys = implode(', ', $keys);
+
+        $query = "";
+    }
+
+    public function select($data)
     {
         try {
-            $stmt = $this->getConnection()->prepare($sql);
 
+            $data = [ 'shopping_list_id' => $data ];
+            $key = array_keys($data);
+            $param = $key[0].'=:'.$key[0];
+            $query = "SELECT * FROM shopping_list WHERE $param";
+            $stmt = $this->getConnection()->prepare($query);
+            $stmt->execute($data);
+            return $stmt->fetch();
+
+        } catch (\PDOException $ex) {
+            if ($this->debug) {
+                echo "<b>Error on ExecuteQuery():</b> " . $ex->getMessage() . "<br />";
+                echo "<br /><b>SQL: </b>" . $query . "<br />";
+
+                echo "<br /><b>Parameters: </b>";
+                print_r($params) . "<br />";
+            }
+            return null;
+        }
+    }
+
+    public function fetchAll($query, $params = null)
+    {
+        try {
+            
+            $stmt = $this->getConnection()->prepare($query);
             $stmt->execute($params);
-
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
         } catch (\PDOException $ex) {
             if ($this->debug) {
                 echo "<b>Error on ExecuteQuery():</b> " . $ex->getMessage() . "<br />";

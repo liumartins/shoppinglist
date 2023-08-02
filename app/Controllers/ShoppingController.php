@@ -9,9 +9,23 @@ class ShoppingController extends Controller
 {
     protected $config;
 
-    public function newAction()
+    public function newAction($params)
     {  
-       return $this->view('shopping/form', ['action' => 'store']);
+
+      if($params['id'] !== ''){
+          $model = $this->model(ShoppingList::class);
+          $data = [
+            'config' => ['action' => 'udate'],
+            'values' => $model->getItem($params['id'])
+          ];
+       } else {
+          $data = [
+                'config' => [ 'action' => 'store' ],   
+                'values' => []
+          ];  
+       }
+
+       return $this->view('shopping/form', $data);
     }
 
     public function listAction()

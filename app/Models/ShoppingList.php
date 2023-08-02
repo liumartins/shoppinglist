@@ -21,6 +21,10 @@ class ShoppingList extends Model {
         return $this->pdo->insert($data);
     }
 
+    public function getItem($data) {
+        return $this->pdo->select($data);
+    }
+
 	public function getAll()
     {
         $query = 'SELECT * FROM ' . $this->table .  ' ORDER BY ' . $this->primaryKey . ' ASC';
