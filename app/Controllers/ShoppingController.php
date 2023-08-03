@@ -12,7 +12,7 @@ class ShoppingController extends Controller
     public function newAction($params)
     {  
 
-      if($params['id'] !== ''){
+      if($params && $params['id'] !== ''){
           $model = $this->model(ShoppingList::class);
           $data = [
             'config' => ['action' => 'update'],
@@ -40,14 +40,14 @@ class ShoppingController extends Controller
     {
        $model = $this->model(ShoppingList::class);
        $model->store($_POST);
-       header('/shopping/list');
+       return header('Location: /shopping/list');
     }
 
     public function updateAction()
     {
        $model = $this->model(ShoppingList::class);
        $model->change($_POST);
-       return header('/shopping/list');
+       return header('Location: /shopping/list');
     }
 
     public function deleteAction()
